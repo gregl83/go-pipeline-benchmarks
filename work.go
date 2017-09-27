@@ -10,8 +10,9 @@ import (
 	"net/http"
 )
 
-type Payload struct {
+type Data struct {
 	Iteration int
+	Hash string
 }
 
 var (
@@ -21,7 +22,7 @@ var (
 func A(iteration int) int {
 	reader, writer := io.Pipe()
 	go func(iteration int) {
-		json.NewEncoder(writer).Encode(Payload{
+		json.NewEncoder(writer).Encode(Data{
 			Iteration: iteration,
 		})
 		writer.Close()
