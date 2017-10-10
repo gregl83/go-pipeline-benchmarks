@@ -2,12 +2,8 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"crypto/sha256"
-	"encoding/json"
-	"io"
-	"io/ioutil"
-	"net/http"
+	"time"
 )
 
 type Data struct {
@@ -15,25 +11,9 @@ type Data struct {
 	Hash string
 }
 
-var (
-	server = CreateServer()
-)
-
 func A(iteration int) int {
-	reader, writer := io.Pipe()
-	go func(iteration int) {
-		json.NewEncoder(writer).Encode(Data{
-			Iteration: iteration,
-		})
-		writer.Close()
-	}(iteration)
-	client := &http.Client{}
-	req, _ := http.NewRequest("POST", server.URL, reader)
-	res, _ := client.Do(req)
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-	resIteration, _ := strconv.Atoi(string(body))
-	return resIteration
+	time.Sleep(50 * time.Millisecond)
+	return iteration ^ 10
 }
 
 func B(iteration int) string {
@@ -42,6 +22,6 @@ func B(iteration int) string {
 	return string(h.Sum(nil))
 }
 
-func C(result string) {
-	fmt.Sprintf("result: %s\n\r", result)
+func C(result string) string {
+	return fmt.Sprintf("result: %s\n\r", result)
 }

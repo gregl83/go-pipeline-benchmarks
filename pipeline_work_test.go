@@ -4,11 +4,6 @@ import (
 	"testing"
 )
 
-type Payload struct{
-	Data Data
-	Errors []error
-}
-
 func BenchmarkSynchronousABC(b *testing.B) {
 	for n := 0; n < b.N; n++ {
 		C(B(A(n)))
